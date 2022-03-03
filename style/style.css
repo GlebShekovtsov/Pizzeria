@@ -1,55 +1,86 @@
-.main{
+.main {
     display: flex;
 }
-.header_info{
+
+.header_info {
     position: absolute;
     margin-top: 85px;
     font-family: sans-serif;
-    
+
 }
-footer{
+
+footer {
     background-color: #ff6900;
     font-family: sans-serif;
     display: flex;
     color: white;
 }
-.header_info a{
+
+.header_info a {
     color: #ff6900;
     text-decoration: none;
     font-weight: bold;
 }
-.respons{
+
+.respons {
     width: 150px;
     height: 150px;
 }
-.content h1, p{
+
+.content h1, p {
     font-family: sans-serif;
 }
-.content h1{
+
+.content h1 {
     color: #ff6900;
 }
+
 .cont {
     font-family: sans-serif;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
-.cont h2, h3{
 
-    color:#ff6900;
+.cont h2, h3 {
+
+    color: #ff6900;
 }
-#block{
+
+#block {
     display: block;
     padding: 8px 8px;
 }
-#pizza_block{
+
+
+.bd_cont h2, h3 {
+
+    color: #ff6900;
+}
+
+
+
+#pizza_block {
     display: block;
     padding: 8px 8px;
+    width: 300px;
+    text-align: center;
+
+    
 }
-#pizza_image{
+.pizza_block_bd {
+    display: block;
+    padding: 8px 8px;
+    width: 300px;
+    text-align: center;
+
+    
+}
+#pizza_image {
     width: 200px;
     height: 200px;
 }
+
 .menu {
     list-style-type: none;
     padding-left: 0;
@@ -58,7 +89,8 @@ footer{
     flex-direction: row;
     flex-wrap: wrap;
 }
-.menu a{
+
+.menu a {
     text-decoration: none;
     font-family: sans-serif;
     color: black;

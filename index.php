@@ -13,8 +13,9 @@ if (isset($_GET["id"])) {
 }
 $napolnenie = "SELECT * FROM `site` WHERE id='$id'";
 $result1 = mysqli_query($conn, $napolnenie);
-
 $row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC);
+$pizzaSelection = "SELECT * FROM `pizza_list`";
+$pizzaResult = mysqli_query($conn, $pizzaSelection);
 
 ?>
 
@@ -58,16 +59,40 @@ $row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC);
         ?>
     </div>
     <div class="content">
-        <?php echo $row1["content"]; ?>
+        <?php
 
+        echo $row1["content"];
+        echo "<h1>" ."Меню". "</h1>"
+        ?>
+        <div class="cont">
+            
+                <?php
+                foreach ($pizzaResult as $pizzaRow) {
+                    $show_img = base64_encode($pizzaRow['image']);
+                    echo "<div id='pizza_block'>";
+
+                ?>
+                    <img id="pizza_image" src="data:image/jpeg;base64, <?php echo $show_img ?>" alt="">
+                <?php
+                    echo "<h2>" . $pizzaRow['title'] . "</h2>";
+                    echo "<p>" . $pizzaRow['description'] . "</p>";
+                    echo "<h3>" . $pizzaRow['price'] . "</h3>";
+                    echo "</div>";
+                }
+
+                ?>
+            
+
+
+        </div>
     </div>
 
-   
 
 </body>
 <footer>
     <div>
-    Pizza House © 2022
+        Pizza House © 2022
     </div>
 </footer>
+
 </html>
