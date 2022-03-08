@@ -11,9 +11,13 @@
 
 footer {
     background-color: #ff6900;
-    font-family: sans-serif;
-    display: flex;
+    position:fixed;
+    left:0px;
+    bottom:0px;
+    height:20px;
+    width:100%;
     color: white;
+    font-family: sans-serif;
 }
 
 .header_info a {
@@ -41,7 +45,10 @@ footer {
     flex-direction: row;
     flex-wrap: wrap;
 }
-
+.cont .h3, a{
+    text-decoration: none;
+    color: #ff6900;
+}
 .cont h2, h3 {
 
     color: #ff6900;
