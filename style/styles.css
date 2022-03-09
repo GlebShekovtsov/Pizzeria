@@ -72,20 +72,14 @@ footer {
     padding: 8px 8px;
     width: 300px;
     text-align: center;
-
+   
     
 }
-.pizza_block_bd {
-    display: block;
-    padding: 8px 8px;
-    width: 300px;
-    text-align: center;
 
-    
-}
 #pizza_image {
     width: 200px;
     height: 200px;
+    
 }
 
 .menu {

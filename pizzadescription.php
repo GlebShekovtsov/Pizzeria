@@ -11,7 +11,8 @@ $result = mysqli_query($conn, $sql);
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
 }
-$pizzaFullSelection = "SELECT * FROM `pizza_list`";
+$pizzaId = mysqli_real_escape_string($conn, $_GET["id"]);
+$pizzaFullSelection = "SELECT * FROM `pizza_list` WHERE id = '$pizzaId' ";
 $pizzaResult = mysqli_query($conn, $pizzaFullSelection);
 
 ?>
@@ -61,8 +62,10 @@ $pizzaResult = mysqli_query($conn, $pizzaFullSelection);
                 <img id="pizza_image" src="data:image/jpeg;base64, <?php echo $show_img ?>" alt="">
             <?php
                 echo "<h2>" . $pizzaRow['title'] . "</h2>";
+                echo "<p>" . $pizzaRow['description'] . "</p>";
                 echo "<p>" . $pizzaRow['longDescription'] . "</p>";
                 echo "<h3>" . $pizzaRow['price'] . "</h3>";
+
                 echo "</div>";
             }
 

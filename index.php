@@ -11,12 +11,19 @@ $result = mysqli_query($conn, $sql);
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
 }
+if (isset($_GET["pizzaid"])) {
+    $pizzaid = $_GET["pizzaid"];
+}
 $napolnenie = "SELECT * FROM `site` WHERE id='$id'";
 $result1 = mysqli_query($conn, $napolnenie);
 $row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC);
+$pizzaId = mysqli_real_escape_string($conn, $_GET["pizzaid"]);
 $pizzaSelection = "SELECT * FROM `pizza_list`";
+$pizzaIdSelection = "SELECT * FROM `pizza_list`  WHERE id = '$pizzaId'";
+$pizzaIdResult = mysqli_query($conn, $pizzaIdSelection);
 $pizzaResult = mysqli_query($conn, $pizzaSelection);
-
+$siteId = mysqli_real_escape_string($conn, $_GET["id"]);
+$siteIdSelection = "SELECT * FROM `site` WHERE id = '$siteId' ";
 ?>
 
 <!DOCTYPE html>
@@ -48,22 +55,70 @@ $pizzaResult = mysqli_query($conn, $pizzaSelection);
 
     </div>
     <div class="menu">
-        <?php
 
+        <?php
         foreach ($result as $row) {
             echo "<ul class='menu'";
             echo "<li><a href='index.php?id=" . $row["id"] . "'>" . " " . $row["title"] . " " . "</a></li>";
         }
-        echo "<li><a href='pizza.php'" . ">" . "Меню" . "</a></li>";
         echo "</ul>";
         ?>
     </div>
     <div class="content">
+
         <?php
-        echo $row1["content"];
+        if (isset($_GET["id"]) && $_GET["id"] == 4 ||  isset($_GET["pizzaid"])) {
+
+
+            echo "<h1>" . "Меню" . "</h1>"
         ?>
+            <div class="cont">
+
+                <?php
+                if (isset($_GET["pizzaid"])) {
+                    foreach ($pizzaIdResult as $pizzaRow) {
+                        $show_img = base64_encode($pizzaRow['image']);
+                        echo "<div id='pizza_block'>";
+
+                ?>
+                        <img id="pizza_image" src="data:image/jpeg;base64, <?php echo $show_img ?>" alt="">
+                    <?php
+
+                        echo "<h2>" . $pizzaRow['title'] . "</h2>";
+                        echo "<p>" . $pizzaRow['description'] . "</p>";
+                        echo "<p>" . $pizzaRow['longDescription'] . "</p>";
+                        echo "<h3>" . $pizzaRow['price'] . "</h3>";
+
+
+                        echo "</div>";
+                    }
+                } else {
+                    foreach ($pizzaResult as $pizzaRow) {
+                        $show_img = base64_encode($pizzaRow['image']);
+                        echo "<div id='pizza_block'>";
+
+                    ?>
+                        <img id="pizza_image" src="data:image/jpeg;base64, <?php echo $show_img ?>" alt="">
+            <?php
+
+                        echo "<h2>" . $pizzaRow['title'] . "</h2>";
+                        echo "<p>" . $pizzaRow['description'] . "</p>";
+                        echo "<h3>" . $pizzaRow['price'] . "</h3>";
+                        echo "<h3><a href='index.php?pizzaid=" . $pizzaRow['id'] . "'> Подробнее </a></h3>";
+
+
+                        echo "</div>";
+                    }
+                }
+            } else {
+                echo $row1["content"];
+            }
+
+            ?>
+
+            </div>
     </div>
-    </div>
+
     <footer>
         <div>Pizza House © 2022</div>
     </footer>

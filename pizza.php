@@ -34,7 +34,7 @@ $pizzaResult = mysqli_query($conn, $pizzaSelection);
             <div class="left">
                 <div class="logo">
                     <img src="img/pizza.png" class="respons" alt="">
-                    <span class="header_info">Доставка пиццы в <a href="#">Волгограде</a> <br> Время доставки: 15 минут</span>
+                    <span class="header_info">Доставка пиццы <a href="#">Волгограде</a> <br> Время доставки: 15 минут</span>
                 </div>
 
             </div>
@@ -62,7 +62,7 @@ $pizzaResult = mysqli_query($conn, $pizzaSelection);
                 echo "<h2>" . $pizzaRow['title'] . "</h2>";
                 echo "<p>" . $pizzaRow['description'] . "</p>";
                 echo "<h3>" . $pizzaRow['price'] . "</h3>";
-                echo "<h3><a href='pizzadescription.php?id=" . $pizzaRow['id'] ."'> Состав </a></h3>";
+                echo "<h3><a href='pizzadescription.php?id=" . $pizzaRow['id'] ."'> Подробнее </a></h3>";
                 echo "</div>";
             }
 
