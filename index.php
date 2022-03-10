@@ -14,6 +14,9 @@ if (isset($_GET["id"])) {
 if (isset($_GET["pizzaid"])) {
     $pizzaid = $_GET["pizzaid"];
 }
+if (isset($_GET["promoid"])) {
+    $promoid = $_GET["promoid"];
+}
 $napolnenie = "SELECT * FROM `site` WHERE id='$id'";
 $result1 = mysqli_query($conn, $napolnenie);
 $row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC);
@@ -24,17 +27,28 @@ $pizzaIdResult = mysqli_query($conn, $pizzaIdSelection);
 $pizzaResult = mysqli_query($conn, $pizzaSelection);
 $siteId = mysqli_real_escape_string($conn, $_GET["id"]);
 $siteIdSelection = "SELECT * FROM `site` WHERE id = '$siteId' ";
+$promoId =  mysqli_real_escape_string($conn, $_GET["promoid"]);
+$promoIdSelection = "SELECT * FROM `promotion` WHERE id = '$promoId'";
+$promoSelection = "SELECT * FROM `promotion` ORDER BY rand() limit 2";
+$promoIdResult = mysqli_query($conn, $promoIdSelection);
+$promoSelectionResult = mysqli_query($conn, $promoSelection);
+$promoAllSelection = "SELECT * FROM `promotion`";
+$promoAllResult = mysqli_query($conn, $promoAllSelection);
 ?>
 
 <!DOCTYPE html>
 <html lang="ru">
 
+</style>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style/styles.css">
+    <link rel="stylesheet" href="style/style.css">
+
     <title>Pizza House</title>
+
 </head>
 
 <body>
@@ -68,8 +82,6 @@ $siteIdSelection = "SELECT * FROM `site` WHERE id = '$siteId' ";
 
         <?php
         if (isset($_GET["id"]) && $_GET["id"] == 4 ||  isset($_GET["pizzaid"])) {
-
-
             echo "<h1>" . "Меню" . "</h1>"
         ?>
             <div class="cont">
@@ -99,7 +111,7 @@ $siteIdSelection = "SELECT * FROM `site` WHERE id = '$siteId' ";
 
                     ?>
                         <img id="pizza_image" src="data:image/jpeg;base64, <?php echo $show_img ?>" alt="">
-            <?php
+                <?php
 
                         echo "<h2>" . $pizzaRow['title'] . "</h2>";
                         echo "<p>" . $pizzaRow['description'] . "</p>";
@@ -110,13 +122,75 @@ $siteIdSelection = "SELECT * FROM `site` WHERE id = '$siteId' ";
                         echo "</div>";
                     }
                 }
+            } else if (isset($_GET["id"]) && $_GET["id"] == 5) {
+                echo "<div class='cont'>";
+
+
+
+                if (isset($_GET["promoid"])) {
+                    foreach ($promoIdResult as $promoRow) {
+                        echo "<div class='promoBlock'>";
+                        echo "<h2>" . $promoRow['title'] . "</h2>";
+                        echo "<p>" . $promoRow['description'] . "</p>";
+                        echo "<p>" . $promoRow['longDescription'] . "</p>";
+                        echo "</div>";
+                    }
+                } else {
+                    foreach ($promoAllResult as $promoRow) {
+                        echo "<div class='promoBlock'>";
+                        echo "<h2>" . $promoRow['title'] . "</h2>";
+                        echo "<p>" . $promoRow['description'] . "</p>";
+                        echo "<h3><a href='index.php?promoid=" . $promoRow['id'] . "'> Подробнее </a></h3>";
+                        echo "</div>";
+                    }
+                }
+                echo "<div class='cont'>";
+                ?>
+
+
+
+
+            <?php
             } else {
+
                 echo $row1["content"];
             }
 
             ?>
 
             </div>
+
+    </div>
+
+    <div class="news">
+
+        <div class="cont">
+
+            <?php
+            if (isset($_GET["promoid"]) && $_GET["id"] != 5) {
+
+                foreach ($promoIdResult as $promoRow) {
+
+                    echo "<div class='promoBlock'>";
+                    echo "<h2>" . $promoRow['title'] . "</h2>";
+                    echo "<p>" . $promoRow['longDescription'] . "</p>";
+                    echo "</div>";
+                }
+            } else if (!isset($_GET["promoid"]) && $_GET["id"] != 5) {
+
+                foreach ($promoSelectionResult as $promoRow) {
+                    echo "<div class='promoBlock'>";
+                    echo "<h2>" . $promoRow['title'] . "</h2>";
+                    echo "<p>" . $promoRow['description'] . "</p>";
+                    echo "<h3><a href='index.php?promoid=" . $promoRow['id'] . "'> Подробнее </a></h3>";
+                    echo "</div>";
+                }
+            }
+
+
+            ?>
+        </div>
+
     </div>
 
     <footer>
