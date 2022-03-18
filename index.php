@@ -2,6 +2,7 @@
 
 use LDAP\Result;
 
+session_start();
 $conn = mysqli_connect("localhost", "root", "root", "pizza");
 if (!$conn) {
     die("Ошибка: " . mysqli_connect_error());
@@ -59,6 +60,20 @@ $promoAllResult = mysqli_query($conn, $promoAllSelection);
                 <div class="logo">
                     <img src="img/pizza.png" class="respons" alt="">
                     <span class="header_info">Доставка пиццы в <a href="#">Волгограде</a> <br> Время доставки: 15 минут</span>
+                    <?php
+                    if (isset($_SESSION["userid"])) {
+                        $currentID = $_SESSION["userid"];
+                        $loginSelect = "SELECT login FROM `users` WHERE id = '$currentID'";
+                        $loginResult = mysqli_query($conn, $loginSelect);
+                        $loginFetch = mysqli_fetch_array($loginResult);
+
+                        echo "Привет," . $loginFetch['login'];
+                        echo "<a href='exit.php'>" . " Выйти?" . "</a>";
+                    } else {
+                        echo "<a href='auth.php'>" . "Войти" . "</a>";
+                    }
+                    ?>
+
                 </div>
 
             </div>
@@ -144,10 +159,23 @@ $promoAllResult = mysqli_query($conn, $promoAllSelection);
                         echo "</div>";
                     }
                 }
-                echo "<div class='cont'>";
+                echo "</div>";
                 ?>
 
 
+
+
+            <?php
+            } else if (isset($_GET["id"]) && $_GET["id"] == 11) {
+            ?>
+                <div class="cont">
+                    <form action="reg.php" method="POST">
+                        <h1>Введите данные для регистрации</h1>
+                        <p>Логин: <input type="text" name="login"></p>
+                        <p>Пароль: <input type="text" name="password"></p>
+                        <p><input type="submit" value="Отправить"></p>
+                    </form>
+                </div>
 
 
             <?php
