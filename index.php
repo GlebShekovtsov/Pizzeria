@@ -67,7 +67,7 @@ $promoAllResult = mysqli_query($conn, $promoAllSelection);
                         $loginResult = mysqli_query($conn, $loginSelect);
                         $loginFetch = mysqli_fetch_array($loginResult);
 
-                        echo "Привет," . $loginFetch['login'];
+                        echo "Привет, " . $loginFetch['login'];
                         echo "<a href='exit.php'>" . " Выйти?" . "</a>";
                     } else {
                         echo "<a href='auth.php'>" . "Войти" . "</a>";
@@ -77,8 +77,7 @@ $promoAllResult = mysqli_query($conn, $promoAllSelection);
                 </div>
 
             </div>
-
-
+        
         </header>
 
 
@@ -169,13 +168,61 @@ $promoAllResult = mysqli_query($conn, $promoAllSelection);
             } else if (isset($_GET["id"]) && $_GET["id"] == 11) {
             ?>
                 <div class="cont">
-                    <form action="reg.php" method="POST">
+                    <form action="reg.php" method="POST" enctype="multipart/form-data">
                         <h1>Введите данные для регистрации</h1>
                         <p>Логин: <input type="text" name="login"></p>
                         <p>Пароль: <input type="text" name="password"></p>
+                        <p>Выберите файл для аватарки: <input type="file" name="filename" size="10"></p>
                         <p><input type="submit" value="Отправить"></p>
                     </form>
                 </div>
+
+
+            <?php
+            } else if (isset($_GET["id"]) && $_GET["id"] == 12 && isset($_SESSION["userid"])) {
+
+
+                $currentID = $_SESSION["userid"];
+                $loginSelect = "SELECT * FROM `users` WHERE id = '$currentID'";
+                $loginResult = mysqli_query($conn, $loginSelect);
+                $loginFetch = mysqli_fetch_array($loginResult);
+
+            ?>
+                <div class="cont">
+
+                    <div class="promoBlock">
+
+                        <?php
+                        foreach ($loginResult as $userRow) {
+                            echo "<p>" . "Логин: " . $userRow['login'] .  "</p>";
+                            echo "<img id='pizza_image' src='img/" . $userRow['name'] . "' alt=''>";
+                        }
+                        ?>
+
+
+                        <form method="POST" enctype="multipart/form-data">
+
+                            <p>Выберите файл для аватарки: <input type="file" name="filename" size="10"></p>
+                            <br>
+                            <input type="submit" value="Загрузить">
+                        </form>
+                        <?php
+                        if ($_FILES && $_FILES["filename"]["error"] == UPLOAD_ERR_OK) {
+                            $name = $_FILES["filename"]["name"];
+                            $type = $_FILES["filename"]["type"];
+                            $path = __DIR__ . '/img/';
+                            move_uploaded_file($_FILES["filename"]["tmp_name"], $path . $name);
+                            $fileInfoUpload = "UPDATE `users` SET `name` = '$name', `type` = '$type' WHERE `id` = '$currentID'";
+                            if ($conn->query($fileInfoUpload)) {
+                                echo "Аватарка успешно добавлена";
+                            } else {
+                                echo "Ошибка: " . $conn->error;
+                            }
+                        }
+                        ?>
+                    </div>
+                </div>
+
 
 
             <?php
